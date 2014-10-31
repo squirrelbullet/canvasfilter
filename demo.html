@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>HTML Canvas Image Filter Demo</title>
+    <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+    <!--<script type="text/javascript" src="js/canvas_filters.js"></script>-->
+    <script>
+    	$(document).ready(function(){
+    		// hide the original image
+    		//$("#sampleImg").hide();
+
+    		// use the canvas to show image
+    		var renderCanvas = document.getElementById('sampleCanvas');
+    		var ctx = renderCanvas.getContext('2d');
+    		var img = new Image();
+    		// draw image should be called AFTER the image is totally loaded.
+    		img.onload = function(){
+    			ctx.drawImage(img, 0, 0);
+    			$.getScript( "js/canvas_filters.js", function( data, textStatus, jqxhr ) {
+					  alert("Filter is now ready.");
+				});
+    			Filters.isLock = false;
+    		};
+    		img.src = "sample.png";	// now set the src
+
+
+            $("#btnFilter1").click(function(){
+            	if(Filters.isLock == false){
+    				Filters.modernGray(img, renderCanvas, 3, 3, 5, 5, 8, 4);
+    			}
+    			else{
+    				alert("Filter is not ready.");
+    			}
+  			});
+
+  			$("#btnFilter2").click(function(){
+  				if(Filters.isLock == false){
+    				Filters.centralMirror(img, renderCanvas);
+    			}
+    			else{
+    				alert("Filter is not ready.");
+    			}
+  			});
+
+  			$("#btnFilter3").click(function(){
+  				if(Filters.isLock == false){
+    				Filters.shattered(img, renderCanvas);
+    			}
+    			else{
+    				alert("Filter is not ready.");
+    			}
+  			});
+
+  			$("#btnReset").click(function(){
+  				if(Filters.isLock == false){
+                	Filters.resetImage(img, renderCanvas);
+                }
+                else{
+    				alert("Filter is not ready.");
+    			}
+            });
+		});
+    </script>
+</head>
+<body style="margin: 0px;">
+
+<!-- sample image, but make it hidden -->
+<p>
+	<canvas id="sampleCanvas" width="640" height="1008"></canvas>
+</p>
+
+<p><button id="btnFilter1">Modern Grayscale</button></p>
+
+<p><button id="btnFilter2">Mirror</button></p>
+
+<p><button id="btnFilter3">Shattered</button></p>
+
+<p><button id="btnReset">Reset Filter</button></p>
+
+</body>
+</html>
